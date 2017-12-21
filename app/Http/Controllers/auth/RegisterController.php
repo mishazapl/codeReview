@@ -10,7 +10,7 @@ use Users;
 class RegisterController extends PostValidate
 {
     /**
-     * Сохранение данных.
+     * Валидация и сохранение данных.
      *
      * @param Request $request
      * @return mixed
@@ -27,7 +27,7 @@ class RegisterController extends PostValidate
             )
         );
 
-        return Users::create
+        Users::create
         (
             [
             'login'    => $data['login'],
