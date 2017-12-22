@@ -11,7 +11,7 @@ class LoginController extends PostValidate
      * Валидация, поиск пользователя в бд.
      * В случае если пользователь найден возращать токен
      * и записовать в redis и удалять предедущий.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

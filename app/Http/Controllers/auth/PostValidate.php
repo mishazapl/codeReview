@@ -17,7 +17,6 @@ abstract class PostValidate extends Controller implements AuthValidate
      */
     public function validate(Request $request, array $rules)
     {
-        // Ожидаю проверку в redis.
 
         $data = json_decode($request->post());
 
