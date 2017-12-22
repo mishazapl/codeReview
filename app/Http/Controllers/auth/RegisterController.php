@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\auth;
 
-use App\User;
+use App\Http\Controllers\PostValidate;
+use App\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -17,10 +18,6 @@ class RegisterController extends PostValidate
      */
     public function store(Request $request)
     {
-        /**
-         * Передаем правила валидации.
-         * @data
-         */
 
         $data = $this->validatePost
         (
@@ -32,12 +29,7 @@ class RegisterController extends PostValidate
             )
         );
 
-        /**
-         * Сохраняем данные в массив.
-         * @result
-         */
-
-        $result = User::create
+        $result = Users::create
         (
             [
             'login'    => $data['login'],
@@ -48,11 +40,6 @@ class RegisterController extends PostValidate
             ]
         );
 
-
-        if ($result) {
-            return response()->json(['', 'Вы зарегистрировались!'],200);
-        } else {
-            return response()->json(['', 'Что-то пошло не так'],520);
-        }
+        $this->response($result, ['token' => $result->token]);
     }
 }

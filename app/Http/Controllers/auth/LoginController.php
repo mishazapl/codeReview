@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\auth;
 
-use App\User;
+use App\Http\Controllers\PostValidate;
+use App\Users;
 use Illuminate\Http\Request;
 
 class LoginController extends PostValidate
@@ -27,15 +28,17 @@ class LoginController extends PostValidate
             )
         );
 
-        $token = User::where
+        $token = Users::where
         (
             [
                 'login'    => $data['login'],
                 'email'    => $data['email'],
                 'password' => $data['password'],
             ]
-        )->select('token')->toArray()->limit(1);
+        )->select('token')->limit(1);
 
-        return response()->json($token);
+
+        $this->response($token, ['token' => $token]);
+
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Str;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterTest extends TestCase
 {
@@ -13,21 +12,44 @@ class RegisterTest extends TestCase
      *
      * @return void
      */
-    public function testInsert()
+    public function testInsertJson()
     {
+        for ($i = 0; $i < 3; $i++) {
 
-        $data =
-        (
-            [
-                'login'    => 'misha',
-                'email'    => 'misha@mail.ru',
-                'password' => '1122Ddcdcweedcdfgs'
-            ]
-        );
+            $response = $this->json('POST', '/api/v1/user/register', $this->dataInsertJson($i));
 
-        $response = $this->json('POST', 'api/v1/user/register', $data);
-
-        $response->assertStatus(200);
+            $response->assertStatus(200);
+        }
     }
 
+    public function dataInsertJson($loop)
+    {
+        $data =
+            [
+                array
+                (
+                    'login'    => Str::random(20),
+                    'email'    => Str::random(7).'@mail.ru',
+                    'password' => Str::random(30),
+                ),
+
+                array
+                (
+                    'login'    => Str::random(30),
+                    'email'    => Str::random(10).'@mail.ru',
+                    'password' => Str::random(12),
+                ),
+
+                array
+                (
+                    'login'    => Str::random(6),
+                    'email'    => Str::random(15).'@mail.ru',
+                    'password' => Str::random(11),
+                ),
+            ];
+
+        $result = $data[$loop];
+
+        return $result;
+    }
 }
