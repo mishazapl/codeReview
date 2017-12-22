@@ -16,3 +16,21 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/**
+ * API version 1.
+ */
+
+Route::prefix('/v1')->group(function () {
+
+    /**
+     * Роуты авторизации.
+     */
+
+    Route::prefix('/user')->group(function () {
+
+        Route::post('/register', 'auth\RegisterController@store');
+
+    });
+
+});

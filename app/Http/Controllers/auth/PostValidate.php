@@ -4,7 +4,8 @@ namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
+
 
 abstract class PostValidate extends Controller implements AuthValidate
 {
@@ -13,17 +14,30 @@ abstract class PostValidate extends Controller implements AuthValidate
      *
      * @param Request $request
      * @param array $rules
-     * @return \Illuminate\Http\JsonResponse|mixed
+     * @return array|string
      */
-    public function validate(Request $request, array $rules)
+    public function validatePost(Request $request, array $rules)
     {
+        /**
+         * Если не JSON вернуть ошибку 409.
+         */
+        if (!$request->isJson()) {
+            echo response()->json('Неверный формат данных!',409);
+            exit();
+        }
 
-        $data = json_decode($request->post());
+        /**
+         * Получаем данные из POST и валидируем по правилам из дочернего класса.
+         * @data json
+         *
+         */
+
+        $data = $request->post();
 
         $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
-            echo response()->json(['errors'=> $validator->errors()]);
+            echo response()->json(['errors' => $validator->errors()], 409);
             exit();
         }
 
