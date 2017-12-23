@@ -2,27 +2,33 @@
 
 namespace Tests\Feature;
 
+use App\Users;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
     /**
-     * A basic test example.
+     * 3 раза делает запрос на регистрацию используя RegisterController.
+     * сразу после запроса очищает бд.
      *
-     * @return void
+     * @test
      */
-    public function testInsertJson()
+    public function testRegisterController()
     {
         for ($i = 0; $i < 3; $i++) {
 
-            $response = $this->json('POST', '/api/v1/user/register', $this->dataInsertJson($i));
+            $tmp = $this->dataRegisterController($i);
+
+            $response = $this->json('POST', '/api/v1/user/register', $tmp);
+
+            Users::where('login', '=', $tmp['login'])->delete();
 
             $response->assertStatus(200);
         }
     }
 
-    public function dataInsertJson($loop)
+    public function dataRegisterController($loop)
     {
         $data =
             [

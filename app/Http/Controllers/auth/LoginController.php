@@ -28,17 +28,35 @@ class LoginController extends PostValidate
             )
         );
 
-        $token = Users::where
+        $result = Users::where
         (
             [
-                'login'    => $data['login'],
-                'email'    => $data['email'],
-                'password' => $data['password'],
+                'login' => $data['login'],
+                'email' => $data['email']
             ]
-        )->select('token')->limit(1);
+        )->select('password','token')->get()->first();
+
+        /**
+         * Проверяем корректность данных.
+         */
+
+        if (!is_object($result)) {
+            return response()->json('Совпадений не найдено', 422);
+        } elseif (is_null($result->token) || is_null($result->password)) {
+            return response()->json('токен или пароль не найдены', 422);
+        }
 
 
-        $this->response($token, ['token' => $token]);
+        /**
+         * Сравниваем пароль с хешем.
+         */
+
+        $this->response
+        (
+            password_verify($data['password'], $result->password),
+            ['token' => $result->token],
+            200, 422, 'Вы ввели неверный пароль!'
+        );
 
     }
 }

@@ -40,6 +40,16 @@ class RegisterController extends PostValidate
             ]
         );
 
-        $this->response($result, ['token' => $result->token]);
+        /**
+         * Проверяем корректность данных.
+         */
+
+        if (!is_object($result)) {
+            return response()->json('Неизвестная ошибка.', 520);
+        } elseif (is_null($result->token)) {
+            return response()->json('Не удалось записать токен.', 520);
+        }
+
+        $this->response(is_string($result->token) && !empty($result->token), ['token' => $result->token]);
     }
 }

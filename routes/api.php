@@ -31,6 +31,8 @@ Route::prefix('/v1')->group(function () {
 
         Route::post('/register', 'auth\RegisterController@store');
 
+        Route::post('/auth', 'auth\LoginController@store');
+
     });
 
 });
