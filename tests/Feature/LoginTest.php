@@ -21,7 +21,7 @@ class LoginTest extends TestCase
      */
     public function testLoginController()
     {
-        $this->withoutExceptionHandling();
+        //$this->withoutMiddleware();
 
         $insertData = $this->providerLoginController();
 

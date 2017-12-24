@@ -1,12 +1,17 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: misha
+ * Date: 24.12.17
+ * Time: 14:01
+ */
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
-abstract class PostValidate extends Controller implements JsonValidate
+abstract class Validate extends Controller implements JsonValidate
 {
     /**
      * Валидация данных для дочерних классов.
@@ -15,9 +20,8 @@ abstract class PostValidate extends Controller implements JsonValidate
      * @param array $rules
      * @return array|string
      */
-    public function validatePost(Request $request, array $rules)
+    protected function validateDate(Request $request, array $rules)
     {
-
         if (!$request->isJson()) {
             echo response()->json('Неверный формат данных!',409);
             exit();
@@ -36,16 +40,15 @@ abstract class PostValidate extends Controller implements JsonValidate
     }
 
     /**
-     * Вставка данных в таблицу, вначале вызывается метод validatePost.
+     * Вставка данных в таблицу, вначале метода вызывается метод validateDate.
      *
      * @param Request $request
      * @return mixed
      */
-
     abstract function store(Request $request);
 
     /**
-     * Через данный метод реализуется конечная отдача данных пользователю.
+     * Ответ приложения.
      *
      * @param $condition
      * @param $successMessage
@@ -53,7 +56,6 @@ abstract class PostValidate extends Controller implements JsonValidate
      * @param int $failed
      * @param string $failedMessage
      */
-
     public function response($condition, $successMessage, $success = 200, $failed = 520, $failedMessage = 'Что-то пошло не так')
     {
         if ($condition) {
@@ -62,5 +64,4 @@ abstract class PostValidate extends Controller implements JsonValidate
             echo response()->json($failedMessage, $failed);
         }
     }
-
 }

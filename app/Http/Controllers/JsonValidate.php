@@ -10,5 +10,5 @@ interface JsonValidate
 
     public function store(Request $request);
 
-    public function response($condition, $successMessage, $success = 200, $failed = 520, $failedMessage = 'Что-то пошло не так');
+    public function response($condition, $successMessage, $success = 200, $failed = 500, $failedMessage = 'Что-то пошло не так');
 }

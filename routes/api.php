@@ -29,9 +29,9 @@ Route::prefix('/v1')->group(function () {
 
     Route::prefix('/user')->group(function () {
 
-        Route::post('/register', 'auth\RegisterController@store');
+        Route::middleware('redisUnRegister')->post('/register', 'auth\RegisterController@store');
 
-        Route::post('/auth', 'auth\LoginController@store');
+        Route::middleware('redisUnRegister')->post('/auth', 'auth\LoginController@store');
 
     });
 

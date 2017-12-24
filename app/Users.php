@@ -16,4 +16,9 @@ class Users extends Model
         'login', 'email', 'password', 'role_id', 'token'
     ];
 
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
 }

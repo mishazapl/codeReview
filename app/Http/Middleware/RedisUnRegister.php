@@ -16,13 +16,17 @@ class RedisUnRegister
      */
     public function handle($request, Closure $next)
     {
+        if (is_null($request->get('token'))) {
+            return response()->json('Вы не передали токен', 404);
+        }
+
         $token = (string) $request->get('token');
 
-        $redis = new Redis();
+        $redis = Redis::connection();
 
         $user = $redis->get($token);
 
-        if ($user != 'unRegister') {
+        if (!is_int($user)) {
             return response()->json([ 'error' => 404, 'message' => 'Ваш токен не найден, запросите его снова' ], 404);
         }
 

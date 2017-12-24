@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\auth;
 
-use App\Http\Controllers\PostValidate;
 use App\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
-class RegisterController extends PostValidate
+class RegisterController extends AuthValidate
 {
     /**
      * Валидация и сохранение данных.
@@ -19,7 +18,7 @@ class RegisterController extends PostValidate
     public function store(Request $request)
     {
 
-        $data = $this->validatePost
+        $data = $this->validateDate
         (
             $request, array
             (
@@ -50,6 +49,7 @@ class RegisterController extends PostValidate
             return response()->json('Не удалось записать токен.', 520);
         }
 
-        $this->response(is_string($result->token) && !empty($result->token), ['token' => $result->token]);
+        $this->response(is_string($result->token) && !empty($result->token), $result->token);
     }
+
 }

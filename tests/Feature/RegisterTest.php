@@ -16,6 +16,8 @@ class RegisterTest extends TestCase
      */
     public function testRegisterController()
     {
+        //$this->withoutMiddleware();
+
         for ($i = 0; $i < 3; $i++) {
 
             $tmp = $this->dataRegisterController($i);

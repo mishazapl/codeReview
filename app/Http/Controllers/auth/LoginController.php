@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\auth;
 
-use App\Http\Controllers\PostValidate;
 use App\Users;
 use Illuminate\Http\Request;
 
-class LoginController extends PostValidate
+class LoginController extends AuthValidate
 {
     /**
      * Валидация, поиск пользователя в бд.
@@ -18,7 +17,7 @@ class LoginController extends PostValidate
      */
     public function store(Request $request)
     {
-        $data = $this->validate
+        $data = $this->validateDate
         (
             $request, array
             (
@@ -53,8 +52,7 @@ class LoginController extends PostValidate
 
         $this->response
         (
-            password_verify($data['password'], $result->password),
-            ['token' => $result->token],
+            password_verify($data['password'], $result->password), $result->token,
             200, 422, 'Вы ввели неверный пароль!'
         );
 
